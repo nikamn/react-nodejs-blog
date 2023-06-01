@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Button from "../../components/Button";
 
 const Register = () => {
   const [user, setUser] = useState({
@@ -43,12 +44,15 @@ const Register = () => {
             onChange={(e) => setUser({ ...user, password: e.target.value })}
             autoComplete="on"
           />
-          <button
-            className="bg-btn text-white h-10 uppercase"
+          <Button
+            title="Register"
             onClick={register}
-          >
-            Register
-          </button>
+            disabled={
+              user.name.length < 3 ||
+              user.email.length < 3 ||
+              user.password.length < 3
+            }
+          />
           <Link to="/login" className="text-center text-secondary underline">
             Already have an account? Login
           </Link>
