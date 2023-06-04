@@ -1,17 +1,31 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
+import { RegisterUser } from "../../api/users";
+import { toast } from "react-hot-toast";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     name: "",
     email: "",
     password: "",
   });
 
-  const register = (e) => {
+  const register = async (e) => {
     e.preventDefault();
     console.log(user);
+    try {
+      const response = await RegisterUser(user);
+      if (response.success) {
+        navigate("/login");
+        toast.success(response.message);
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (

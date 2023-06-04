@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/Button";
+import { LoginUser } from "../../api/users";
+import { toast } from "react-hot-toast";
 
 const Login = () => {
   const [user, setUser] = useState({
@@ -8,9 +10,22 @@ const Login = () => {
     password: "",
   });
 
-  const login = (e) => {
+  const login = async (e) => {
     e.preventDefault();
     console.log(user);
+    try {
+      const response = await LoginUser(user);
+      if (response.success) {
+        console.log(response.data);
+        localStorage.setItem("token", response.data);
+        window.location.href = "/";
+        toast.success(response.message);
+      } else {
+        toast.error(response.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
